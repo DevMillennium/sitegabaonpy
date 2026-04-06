@@ -1,5 +1,3 @@
-const form = document.getElementById("formulario");
-const formMsg = document.getElementById("form-msg");
 const anio = document.getElementById("anio");
 const videoEmpresa = document.getElementById("video-empresa");
 const heroHeadline = document.getElementById("hero-headline");
@@ -7,22 +5,76 @@ const heroLead = document.getElementById("hero-lead");
 const ctaComprar = document.getElementById("comprar");
 
 const config = window.LANDING_CONFIG || {};
-const numeroEmpresa = config.whatsappNumber || "595000000000";
-const supabaseUrl = config.supabaseUrl || "";
-const supabaseAnonKey = config.supabaseAnonKey || "";
-const supabaseTable = config.supabaseTable || "landing_leads";
+const numeroEmpresa = config.whatsappNumber || "595992799800";
+
+function initAnalytics() {
+  const gaId = config.ga4MeasurementId;
+  const metaId = config.metaPixelId;
+
+  if (gaId) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    window.gtag = gtag;
+    const gaScript = document.createElement("script");
+    gaScript.async = true;
+    gaScript.src =
+      "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(gaId);
+    document.head.appendChild(gaScript);
+    gaScript.onload = function () {
+      gtag("js", new Date());
+      gtag("config", gaId);
+    };
+  }
+
+  if (metaId) {
+    !(function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = "2.0";
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    if (window.fbq) {
+      window.fbq("init", metaId);
+      window.fbq("track", "PageView");
+    }
+  }
+}
+
+function trackEvent(name, params) {
+  const payload = params || {};
+  if (typeof window.gtag === "function") {
+    window.gtag("event", name, payload);
+  }
+  if (typeof window.fbq === "function") {
+    window.fbq("trackCustom", name, payload);
+  }
+}
+
+initAnalytics();
 
 const variants = {
   A: {
     headline: "Garbaon Premium Multipeptide Cream",
     lead:
-      "Cuidado facial avanzado de origen coreano con distribución local de Phoenix Global Import.",
+      "Cuidado facial avanzado de origen coreano con venta y logística desde Gabaon Store (Paraguay).",
     cta: "Reservar por WhatsApp"
   },
   B: {
     headline: "Piel más firme e hidratada con rutina premium",
     lead:
-      "Descubrí Garbaon 50ml con experiencia de compra local en Paraguay junto a Phoenix Global Import.",
+      "Descubrí Garbaon 50ml con experiencia de compra local en Paraguay junto a Gabaon Store.",
     cta: "Quiero mi Garbaon hoy"
   }
 };
@@ -39,13 +91,40 @@ function getOrCreateVariant() {
 const activeVariant = getOrCreateVariant();
 const variantData = variants[activeVariant];
 
+function buildWhatsAppUrl() {
+  const mensaje =
+    "Hola Gabaon Store, quiero información sobre Garbaon Premium Multipeptide Cream 50ml. " +
+    `Variante landing: ${activeVariant}.`;
+  return `https://wa.me/${numeroEmpresa}?text=${encodeURIComponent(mensaje)}`;
+}
+
+function wireWhatsAppLinks() {
+  const url = buildWhatsAppUrl();
+  document.querySelectorAll(".js-wa-link").forEach((el) => {
+    el.href = url;
+  });
+}
+
 if (heroHeadline) heroHeadline.textContent = variantData.headline;
 if (heroLead) heroLead.textContent = variantData.lead;
 if (ctaComprar) ctaComprar.textContent = variantData.cta;
 
+wireWhatsAppLinks();
+
 if (anio) {
   anio.textContent = String(new Date().getFullYear());
 }
+
+function emitVariantToAnalytics() {
+  trackEvent("ab_variant_exposed", {
+    variant: activeVariant,
+    test_name: "garbaon_hero_copy"
+  });
+}
+
+window.addEventListener("load", () => {
+  setTimeout(emitVariantToAnalytics, 500);
+});
 
 if (videoEmpresa) {
   const playVideoWhenVisible = async () => {
@@ -54,12 +133,11 @@ if (videoEmpresa) {
     try {
       await videoEmpresa.play();
     } catch (error) {
-      // Fallback for strict autoplay policies.
       videoEmpresa.muted = true;
       try {
         await videoEmpresa.play();
       } catch (fallbackError) {
-        // Keep controls available for manual play.
+        // Controles disponibles para reproducción manual.
       }
     }
   };
@@ -79,67 +157,13 @@ if (videoEmpresa) {
   observer.observe(videoEmpresa);
 }
 
-function getSupabaseClient() {
-  const hasCreds = supabaseUrl && supabaseAnonKey;
-  const factory = window.supabase && window.supabase.createClient;
-  if (!hasCreds || typeof factory !== "function") return null;
-  return factory(supabaseUrl, supabaseAnonKey);
-}
-
-async function saveLead(lead) {
-  const client = getSupabaseClient();
-  if (!client) return { ok: false, reason: "supabase_not_configured" };
-
-  const { error } = await client.from(supabaseTable).insert([lead]);
-  if (error) {
-    return { ok: false, reason: error.message };
-  }
-  return { ok: true };
-}
-
-if (form) {
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const nombre = String(form.nombre.value || "").trim();
-    const telefono = String(form.telefono.value || "").trim();
-    const ciudad = String(form.ciudad.value || "").trim();
-    const submitButton = form.querySelector("button[type='submit']");
-
-    if (!nombre || !telefono || !ciudad) {
-      formMsg.textContent = "Completá todos los campos para continuar.";
-      return;
-    }
-
-    const lead = {
-      nombre,
-      telefono,
-      ciudad,
-      producto: "Garbaon Premium Multipeptide Cream 50ml",
-      variante_ab: activeVariant,
-      origen: "landing_garbaon_py",
-      url: window.location.href,
-      user_agent: navigator.userAgent
-    };
-
-    if (submitButton) submitButton.disabled = true;
-    formMsg.textContent = "Procesando...";
-
-    const saved = await saveLead(lead);
-
-    const mensaje =
-      "Hola Phoenix Global Import, quiero reservar Garbaon Premium Multipeptide Cream. " +
-      `Nombre: ${nombre}. WhatsApp: ${telefono}. Ciudad: ${ciudad}. Variante: ${activeVariant}.`;
-
-    const url = `https://wa.me/${numeroEmpresa}?text=${encodeURIComponent(mensaje)}`;
-
-    if (saved.ok) {
-      formMsg.textContent = "Lead guardado. Abriendo WhatsApp...";
-    } else {
-      formMsg.textContent = "Abriendo WhatsApp...";
-    }
-
-    window.open(url, "_blank", "noopener,noreferrer");
-    if (submitButton) submitButton.disabled = false;
+document.querySelectorAll(".js-wa-link").forEach((el) => {
+  el.addEventListener("click", () => {
+    const location =
+      el.getAttribute("data-wa-location") || (el.id === "whatsapp-float" ? "floating" : "cta");
+    trackEvent("whatsapp_open", {
+      variant: activeVariant,
+      location: location
+    });
   });
-}
+});

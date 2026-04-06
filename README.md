@@ -1,35 +1,40 @@
-# Landing Garbaon - Phoenix Global Import
+# Landing Garbaon — Gabaon Store
 
-Landing page em espanhol (Paraguai) para venda do produto Garbaon, com foco em alta conversão.
+Landing em espanhol (Paraguai) para **Garbaon Premium Multipeptide Cream**, com CTAs para **WhatsApp** e teste A/B no hero.
+
+## Produção
+
+- **Domínio:** [https://gabaon.store/](https://gabaon.store/)
+- **Deploy:** [Vercel](https://vercel.com/) (site estático: `index.html` na raiz).
+- **`vercel.json`:** redirecionamentos 301 de `/garbaon` e `/index.html` para `/` (URL canónica única) e cabeçalhos de segurança básicos.
+- **SEO:** `canonical`, Open Graph e `sitemap.xml` usam `https://gabaon.store/`.
 
 ## Arquivos principais
 
-- `index.html`: estrutura completa da página
-- `css/styles.css`: design premium responsivo
-- `js/main.js`: lógica do formulário, A/B test e CTA para WhatsApp
-- `js/config.js`: configuração de WhatsApp e Supabase
-- `assets/img/garbaon-producto.png`: imagem do produto
-- `assets/img/phoenix-identidad.png`: identidade visual da empresa
-- `assets/video/phoenix-global-import.mp4`: vídeo institucional (adicionar manualmente)
-- `supabase/schema.sql`: tabela e policy para receber leads
+- `index.html` — estrutura da página
+- `css/styles.css` — estilos
+- `js/main.js` — A/B test, links WhatsApp, vídeo institucional, analytics opcional
+- `js/config.js` — `whatsappNumber`, `siteUrl`, IDs GA4/Meta (opcionais)
+- `assets/` — imagens e vídeos (logos, produto, reviews, modos de uso)
+- `robots.txt` / `sitemap.xml` — SEO
+- `supabase/schema.sql` — legado (não usado pela página atual; sem formulário de leads)
 
-## Ajustes obrigatórios antes de publicar
+## Configuração
 
-1. Atualizar `js/config.js`:
-   - `whatsappNumber`
-   - `supabaseUrl`
-   - `supabaseAnonKey`
-2. Rodar `supabase/schema.sql` no SQL Editor do Supabase.
-3. Adicionar o vídeo real da empresa em `assets/video/phoenix-global-import.mp4`.
-4. Ajustar a URL final de produção nas metas (`index.html`, `robots.txt` e `sitemap.xml`), caso seja diferente.
+1. Em `js/config.js`: confirmar `whatsappNumber` (formato internacional sem `+`, ex. `595992799800`).
+2. Opcional: preencher `ga4MeasurementId` e `metaPixelId` para métricas.
 
-## A/B test implementado
+## Ambiente local
 
-- Variante `A`: headline atual e CTA padrão.
-- Variante `B`: headline orientada a benefício e CTA mais direto.
-- O usuário recebe variante fixa por `localStorage` (`garbaon_ab_variant`).
-- A variante é enviada junto ao lead no Supabase.
+Na pasta do projeto:
 
-## Como abrir localmente
+```bash
+python3 -m http.server 8080
+```
 
-Abrir `index.html` diretamente no navegador.
+Abrir [http://127.0.0.1:8080/](http://127.0.0.1:8080/).
+
+## A/B test
+
+- Variantes `A` e `B` no hero (headline, texto e CTA), fixas por `localStorage` (`garbaon_ab_variant`).
+- A variante é incluída na mensagem pré-preenchida do WhatsApp.

@@ -8,7 +8,8 @@ create table if not exists public.landing_leads (
   variante_ab text not null check (variante_ab in ('A', 'B')),
   origen text not null,
   url text,
-  user_agent text
+  user_agent text,
+  consentimiento_privacidad boolean not null default false
 );
 
 alter table public.landing_leads enable row level security;
@@ -19,3 +20,6 @@ create policy "insert anon leads"
   for insert
   to anon
   with check (true);
+
+-- Se a tabela já existia sem esta coluna, execute no SQL Editor:
+-- alter table public.landing_leads add column if not exists consentimiento_privacidad boolean not null default false;
