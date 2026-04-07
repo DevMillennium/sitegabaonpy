@@ -486,8 +486,28 @@
     <span class="whatsapp-float-text">Reservar</span>
   </a>
 
+  <section class="chat-assistente" aria-label="Chat de atención al consumidor">
+    <button class="chat-toggle" id="chat-toggle" type="button" aria-expanded="false" aria-controls="chat-widget">
+      Chat 24h
+    </button>
+    <div class="chat-widget" id="chat-widget" hidden>
+      <header class="chat-header">
+        <strong>Fernanda</strong>
+        <p>Responsable por la atención al consumidor</p>
+      </header>
+      <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+      <form class="chat-form" id="chat-form">
+        <label for="chat-input" class="chat-label">Escribí tu consulta</label>
+        <textarea id="chat-input" rows="2" maxlength="600"
+          placeholder="Ej.: ¿Cuál es el precio hoy y cómo es la entrega?"></textarea>
+        <button class="btn chat-send" type="submit">Enviar</button>
+      </form>
+    </div>
+  </section>
+
   <script src="./js/config.js"></script>
   <script src="./js/main.js" defer></script>
+  <script src="./js/chat.js" defer></script>
 </body>
 
 </html>
