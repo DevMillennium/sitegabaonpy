@@ -1,0 +1,8 @@
+{
+  "name": "gabaon-store-landing",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "extract:knowledge": "node scripts/extract-knowledge.mjs"
+  }
+}

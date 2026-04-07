@@ -752,6 +752,88 @@ h2 {
   width: 100%;
 }
 
+.chat-turn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  max-width: 100%;
+}
+
+.chat-cta-line {
+  margin: 0;
+  padding: 0 0.15rem;
+  font-size: 0.82rem;
+  color: #9ca6c9;
+  line-height: 1.35;
+  max-width: 95%;
+}
+
+.chat-handoff-btn {
+  display: inline-block;
+  margin: 0;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.86rem;
+  text-align: center;
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.chat-lead-panel {
+  border-top: 1px solid #2b344f;
+  padding: 0.75rem 0.85rem 0.5rem;
+  background: #0f141f;
+}
+
+.chat-lead-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #dce2f5;
+}
+
+.chat-lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.chat-lead-label {
+  font-size: 0.76rem;
+  color: #9ca6c9;
+}
+
+.chat-lead-form input[type="text"],
+.chat-lead-form input[type="tel"],
+.chat-lead-form input[type="email"] {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #344064;
+  background: #111827;
+  color: #eef2ff;
+  padding: 0.45rem 0.55rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+}
+
+.chat-lead-check-wrap {
+  display: flex;
+  gap: 0.45rem;
+  align-items: flex-start;
+  font-size: 0.76rem;
+  color: #b8bfd4;
+  line-height: 1.35;
+  margin-top: 0.2rem;
+}
+
+.chat-lead-check-wrap a {
+  color: #f2b35f;
+}
+
+.chat-lead-submit {
+  margin-top: 0.35rem;
+}
+
 @media (max-width: 940px) {
 
   .hero-grid,

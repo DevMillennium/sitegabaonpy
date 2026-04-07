@@ -447,9 +447,11 @@
             WhatsApp <strong>+595 099 279 9800</strong>.
           </li>
           <li>
-            <strong>Datos en esta web:</strong> no hay formulario de captura en esta página. Si
-            escribís por WhatsApp, los datos que envíes en el chat se rigen por las políticas
-            de Meta/WhatsApp y por el uso comercial de Gabaon Store para atender tu consulta.
+            <strong>Datos en esta web:</strong> no hay formulario de captura fijo en la página. Si
+            usás el asistente de chat y enviás el formulario opcional de contacto, usamos esos datos
+            solo para que el equipo te responda, con tu consentimiento explícito. Si escribís por
+            WhatsApp, los datos que envíes en el chat se rigen por las políticas de Meta/WhatsApp y
+            por el uso comercial de Gabaon Store para atender tu consulta.
           </li>
           <li>
             <strong>Navegación:</strong> pueden procesarse datos técnicos básicos (por ejemplo,
@@ -496,6 +498,24 @@
         <p>Responsable por la atención al consumidor</p>
       </header>
       <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+      <div class="chat-lead-panel" id="chat-lead-panel" hidden>
+        <p class="chat-lead-title">Dejanos tus datos y te contactamos</p>
+        <form class="chat-lead-form" id="chat-lead-form">
+          <label class="chat-lead-label" for="chat-lead-nombre">Nombre</label>
+          <input id="chat-lead-nombre" name="nombre" type="text" required maxlength="120" autocomplete="name" />
+          <label class="chat-lead-label" for="chat-lead-telefono">Teléfono / WhatsApp</label>
+          <input id="chat-lead-telefono" name="telefono" type="tel" required maxlength="40" autocomplete="tel" />
+          <label class="chat-lead-label" for="chat-lead-ciudad">Ciudad</label>
+          <input id="chat-lead-ciudad" name="ciudad" type="text" maxlength="120" placeholder="Ej. Asunción" />
+          <label class="chat-lead-label" for="chat-lead-email">Correo (opcional)</label>
+          <input id="chat-lead-email" name="email" type="email" maxlength="200" autocomplete="email" />
+          <label class="chat-lead-check-wrap">
+            <input id="chat-lead-consent" type="checkbox" required />
+            <span>Acepto el tratamiento de mis datos según la <a href="#privacidad">política de privacidad</a>.</span>
+          </label>
+          <button class="btn chat-lead-submit" type="submit">Enviar datos</button>
+        </form>
+      </div>
       <form class="chat-form" id="chat-form">
         <label for="chat-input" class="chat-label">Escribí tu consulta</label>
         <textarea id="chat-input" rows="2" maxlength="600"

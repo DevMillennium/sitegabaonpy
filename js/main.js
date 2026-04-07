@@ -90,6 +90,7 @@ function getOrCreateVariant() {
 
 const activeVariant = getOrCreateVariant();
 const variantData = variants[activeVariant];
+window.garbaonAbVariant = activeVariant;
 
 function buildWhatsAppUrl() {
   const mensaje =

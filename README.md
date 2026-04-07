@@ -15,11 +15,16 @@ Landing em espanhol (Paraguai) para **Garbaon Premium Multipeptide Cream**, com 
 - `css/styles.css` — estilos
 - `js/main.js` — A/B test, links WhatsApp, vídeo institucional, analytics opcional
 - `js/config.js` — `whatsappNumber`, `siteUrl`, IDs GA4/Meta (opcionais)
-- `js/chat.js` — widget de chat 24h no site (Fernanda)
-- `api/chat.js` — endpoint serverless da Vercel integrado ao DeepSeek
+- `js/chat.js` — widget de chat 24h (Fernanda), orquestração no servidor, handoff WhatsApp, lead opcional
+- `api/chat.js` — DeepSeek com `response_format: json_object`, rate limit, FAQ/privacidade extraídos do site
+- `api/lead.js` — gravação opcional de leads no Supabase (`landing_leads`)
+- `api/store-facts.js` — preços e dados comerciais (fonte única para o prompt)
+- `api/knowledge-bundle.js` — texto gerado por `npm run extract:knowledge` a partir do `index.html`
+- `scripts/extract-knowledge.mjs` — atualiza o bundle quando mudar FAQ ou política de privacidade
 - `assets/` — imagens e vídeos (logos, produto, reviews, modos de uso)
 - `robots.txt` / `sitemap.xml` — SEO
-- `supabase/schema.sql` — legado (não usado pela página atual; sem formulário de leads)
+- `supabase/schema.sql` — tabela `landing_leads` (opcional; usada se configurar Supabase no deploy)
+- `supabase/migration_add_email_landing_leads.sql` — coluna `email` em bases já existentes
 
 ## Configuração
 
@@ -32,6 +37,21 @@ vercel env add DEEPSEEK_API_KEY production
 ```
 
 Depois, informar a chave da API DeepSeek no prompt do comando.
+
+4. Opcional — leads do chat no Supabase (mesma tabela `landing_leads`; políticas RLS como no `schema.sql`):
+
+```bash
+vercel env add SUPABASE_URL production
+vercel env add SUPABASE_ANON_KEY production
+```
+
+Se a tabela já existir sem a coluna `email`, executar `supabase/migration_add_email_landing_leads.sql` no SQL Editor do Supabase.
+
+5. Ao alterar FAQ ou a seção de privacidade no `index.html`, regerar a base de texto do chat:
+
+```bash
+npm run extract:knowledge
+```
 
 ## Ambiente local
 
@@ -46,4 +66,4 @@ Abrir [http://127.0.0.1:8080/](http://127.0.0.1:8080/).
 ## A/B test
 
 - Variantes `A` e `B` no hero (headline, texto e CTA), fixas por `localStorage` (`garbaon_ab_variant`).
-- A variante é incluída na mensagem pré-preenchida do WhatsApp.
+- A variante é incluída na mensagem pré-preenchida do WhatsApp e enviada ao endpoint `/api/chat` para contexto da Fernanda.

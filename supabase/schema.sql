@@ -3,6 +3,7 @@ create table if not exists public.landing_leads (
   created_at timestamptz not null default now(),
   nombre text not null,
   telefono text not null,
+  email text,
   ciudad text not null,
   producto text not null,
   variante_ab text not null check (variante_ab in ('A', 'B')),
