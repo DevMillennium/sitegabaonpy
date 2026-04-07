@@ -61,6 +61,7 @@
 
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <a class="skip-link skip-link-chat" href="#ayuda-chat">Ir al asistente — dudas y precios (Fernanda)</a>
 
   <header class="nav">
     <div class="container nav-inner">
@@ -73,6 +74,7 @@
         <a href="#producto">Producto</a>
         <a href="#empresa">Empresa</a>
         <a href="#faq">FAQ</a>
+        <a href="#ayuda-chat" class="nav-chat">Ayuda chat</a>
         <a href="#privacidad">Privacidad</a>
       </nav>
       <a class="btn btn-small js-wa-link" href="https://wa.me/595992799800" target="_blank" rel="noopener noreferrer"
@@ -488,40 +490,65 @@
     <span class="whatsapp-float-text">Reservar</span>
   </a>
 
-  <section class="chat-assistente" aria-label="Chat de atención al consumidor">
-    <button class="chat-toggle" id="chat-toggle" type="button" aria-expanded="false" aria-controls="chat-widget">
-      Chat 24h
-    </button>
-    <div class="chat-widget" id="chat-widget" hidden>
-      <header class="chat-header">
-        <strong>Fernanda</strong>
-        <p>Responsable por la atención al consumidor</p>
-      </header>
-      <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
-      <div class="chat-lead-panel" id="chat-lead-panel" hidden>
-        <p class="chat-lead-title">Dejanos tus datos y te contactamos</p>
-        <form class="chat-lead-form" id="chat-lead-form">
-          <label class="chat-lead-label" for="chat-lead-nombre">Nombre</label>
-          <input id="chat-lead-nombre" name="nombre" type="text" required maxlength="120" autocomplete="name" />
-          <label class="chat-lead-label" for="chat-lead-telefono">Teléfono / WhatsApp</label>
-          <input id="chat-lead-telefono" name="telefono" type="tel" required maxlength="40" autocomplete="tel" />
-          <label class="chat-lead-label" for="chat-lead-ciudad">Ciudad</label>
-          <input id="chat-lead-ciudad" name="ciudad" type="text" maxlength="120" placeholder="Ej. Asunción" />
-          <label class="chat-lead-label" for="chat-lead-email">Correo (opcional)</label>
-          <input id="chat-lead-email" name="email" type="email" maxlength="200" autocomplete="email" />
-          <label class="chat-lead-check-wrap">
-            <input id="chat-lead-consent" type="checkbox" required />
-            <span>Acepto el tratamiento de mis datos según la <a href="#privacidad">política de privacidad</a>.</span>
-          </label>
-          <button class="btn chat-lead-submit" type="submit">Enviar datos</button>
+  <section class="chat-assistente" aria-label="Asistente Fernanda — chat con automatización Gabaon Store">
+    <div class="chat-dock" id="ayuda-chat" tabindex="-1">
+      <div class="chat-dock-row">
+        <button type="button" class="chat-drag-handle" id="chat-drag-handle"
+          aria-label="Arrastrar el acceso de ayuda por la pantalla" title="Arrastrar">
+          <span class="chat-drag-grip" aria-hidden="true"></span>
+        </button>
+        <button class="chat-toggle" id="chat-toggle" type="button" aria-expanded="false" aria-controls="chat-widget"
+          title="Abrir chat con Fernanda (automatización conectada al sitio)">
+          <span class="chat-toggle-glow" aria-hidden="true"></span>
+          <span class="chat-toggle-inner">
+            <svg class="chat-toggle-icon" width="22" height="22" viewBox="0 0 24 24" fill="none"
+              xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path
+                d="M12 3C7.03 3 3 6.58 3 11c0 2.13 1.05 4.05 2.75 5.35L4 21l5.02-1.63A8.4 8.4 0 0 0 12 19c4.97 0 9-3.58 9-8s-4.03-8-9-8z"
+                stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              <circle cx="9" cy="11" r="1.1" fill="currentColor" />
+              <circle cx="12.5" cy="11" r="1.1" fill="currentColor" />
+              <circle cx="16" cy="11" r="1.1" fill="currentColor" />
+            </svg>
+            <span class="chat-toggle-text">
+              <span class="chat-toggle-title">¿Dudas?</span>
+              <span class="chat-toggle-sub">Fernanda · chat automático 24h</span>
+            </span>
+          </span>
+        </button>
+      </div>
+      <div class="chat-widget" id="chat-widget" hidden>
+        <header class="chat-header">
+          <strong>Fernanda</strong>
+          <p>Responsable por la atención al consumidor</p>
+          <p class="chat-header-automation">Respuestas conectadas al catálogo, FAQ y políticas de esta web.</p>
+        </header>
+        <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+        <div class="chat-lead-panel" id="chat-lead-panel" hidden>
+          <p class="chat-lead-title">Dejanos tus datos y te contactamos</p>
+          <form class="chat-lead-form" id="chat-lead-form">
+            <label class="chat-lead-label" for="chat-lead-nombre">Nombre</label>
+            <input id="chat-lead-nombre" name="nombre" type="text" required maxlength="120" autocomplete="name" />
+            <label class="chat-lead-label" for="chat-lead-telefono">Teléfono / WhatsApp</label>
+            <input id="chat-lead-telefono" name="telefono" type="tel" required maxlength="40" autocomplete="tel" />
+            <label class="chat-lead-label" for="chat-lead-ciudad">Ciudad</label>
+            <input id="chat-lead-ciudad" name="ciudad" type="text" maxlength="120" placeholder="Ej. Asunción" />
+            <label class="chat-lead-label" for="chat-lead-email">Correo (opcional)</label>
+            <input id="chat-lead-email" name="email" type="email" maxlength="200" autocomplete="email" />
+            <label class="chat-lead-check-wrap">
+              <input id="chat-lead-consent" type="checkbox" required />
+              <span>Acepto el tratamiento de mis datos según la <a href="#privacidad">política de privacidad</a>.</span>
+            </label>
+            <button class="btn chat-lead-submit" type="submit">Enviar datos</button>
+          </form>
+        </div>
+        <form class="chat-form" id="chat-form">
+          <label for="chat-input" class="chat-label">Escribí tu consulta</label>
+          <textarea id="chat-input" rows="2" maxlength="600"
+            placeholder="Ej.: ¿Cuál es el precio hoy y cómo es la entrega?"></textarea>
+          <button class="btn chat-send" type="submit">Enviar</button>
         </form>
       </div>
-      <form class="chat-form" id="chat-form">
-        <label for="chat-input" class="chat-label">Escribí tu consulta</label>
-        <textarea id="chat-input" rows="2" maxlength="600"
-          placeholder="Ej.: ¿Cuál es el precio hoy y cómo es la entrega?"></textarea>
-        <button class="btn chat-send" type="submit">Enviar</button>
-      </form>
     </div>
   </section>
 

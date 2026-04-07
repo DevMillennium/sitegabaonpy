@@ -5,6 +5,9 @@ const chatForm = document.getElementById("chat-form");
 const chatInput = document.getElementById("chat-input");
 const chatLeadPanel = document.getElementById("chat-lead-panel");
 const chatLeadForm = document.getElementById("chat-lead-form");
+const chatDock = document.getElementById("ayuda-chat");
+const chatDragHandle = document.getElementById("chat-drag-handle");
+const DOCK_POS_KEY = "gabaon_chat_dock_pos";
 
 const config = window.LANDING_CONFIG || {};
 
@@ -28,6 +31,134 @@ function buildWhatsAppUrl(text) {
 
 if (chatToggle && chatWidget && chatMessages && chatForm && chatInput) {
   const history = [];
+
+  function openChatFromNavigation() {
+    chatWidget.hidden = false;
+    chatToggle.setAttribute("aria-expanded", "true");
+    window.requestAnimationFrame(function () {
+      chatInput.focus();
+    });
+  }
+
+  function syncChatFromHash() {
+    if (window.location.hash === "#ayuda-chat") {
+      openChatFromNavigation();
+    }
+  }
+
+  if (chatDock && chatDragHandle) {
+    function clampDockPosition() {
+      const rect = chatDock.getBoundingClientRect();
+      const pad = 8;
+      let right = window.innerWidth - rect.right;
+      let bottom = window.innerHeight - rect.bottom;
+      const maxR = Math.max(pad, window.innerWidth - rect.width - pad);
+      const maxB = Math.max(pad, window.innerHeight - rect.height - pad);
+      right = Math.max(pad, Math.min(right, maxR));
+      bottom = Math.max(pad, Math.min(bottom, maxB));
+      chatDock.style.right = right + "px";
+      chatDock.style.bottom = bottom + "px";
+      chatDock.style.left = "auto";
+      chatDock.style.top = "auto";
+    }
+
+    function loadDockPosition() {
+      try {
+        const raw = localStorage.getItem(DOCK_POS_KEY);
+        if (!raw) return;
+        const pos = JSON.parse(raw);
+        if (typeof pos.right === "number" && typeof pos.bottom === "number") {
+          chatDock.style.right = Math.max(8, pos.right) + "px";
+          chatDock.style.bottom = Math.max(8, pos.bottom) + "px";
+          chatDock.style.left = "auto";
+          chatDock.style.top = "auto";
+          window.requestAnimationFrame(clampDockPosition);
+        }
+      } catch (e) {
+        /* ignore */
+      }
+    }
+
+    loadDockPosition();
+    window.addEventListener("resize", clampDockPosition);
+
+    let dockDrag = null;
+
+    chatDragHandle.addEventListener("pointerdown", function (e) {
+      e.preventDefault();
+      chatDragHandle.setPointerCapture(e.pointerId);
+      const rect = chatDock.getBoundingClientRect();
+      dockDrag = {
+        id: e.pointerId,
+        startX: e.clientX,
+        startY: e.clientY,
+        startRight: window.innerWidth - rect.right,
+        startBottom: window.innerHeight - rect.bottom
+      };
+    });
+
+    chatDragHandle.addEventListener("pointermove", function (e) {
+      if (!dockDrag || e.pointerId !== dockDrag.id) return;
+      const dx = e.clientX - dockDrag.startX;
+      const dy = e.clientY - dockDrag.startY;
+      let right = dockDrag.startRight - dx;
+      let bottom = dockDrag.startBottom - dy;
+      const rect = chatDock.getBoundingClientRect();
+      const pad = 8;
+      const maxR = Math.max(pad, window.innerWidth - rect.width - pad);
+      const maxB = Math.max(pad, window.innerHeight - rect.height - pad);
+      right = Math.max(pad, Math.min(right, maxR));
+      bottom = Math.max(pad, Math.min(bottom, maxB));
+      chatDock.style.right = right + "px";
+      chatDock.style.bottom = bottom + "px";
+      chatDock.style.left = "auto";
+      chatDock.style.top = "auto";
+    });
+
+    function endDockDrag(e) {
+      if (!dockDrag || e.pointerId !== dockDrag.id) return;
+      try {
+        chatDragHandle.releasePointerCapture(e.pointerId);
+      } catch (err) {
+        /* ignore */
+      }
+      const rect = chatDock.getBoundingClientRect();
+      const pos = {
+        right: Math.round(window.innerWidth - rect.right),
+        bottom: Math.round(window.innerHeight - rect.bottom)
+      };
+      try {
+        localStorage.setItem(DOCK_POS_KEY, JSON.stringify(pos));
+      } catch (err2) {
+        /* ignore */
+      }
+      dockDrag = null;
+    }
+
+    chatDragHandle.addEventListener("pointerup", endDockDrag);
+    chatDragHandle.addEventListener("pointercancel", endDockDrag);
+  }
+
+  window.addEventListener("hashchange", syncChatFromHash);
+  document.querySelectorAll('a[href="#ayuda-chat"]').forEach(function (link) {
+    link.addEventListener("click", function () {
+      window.requestAnimationFrame(function () {
+        if (window.location.hash === "#ayuda-chat") {
+          openChatFromNavigation();
+        }
+      });
+    });
+  });
+
+  if (chatDock) {
+    chatDock.addEventListener("focusin", function (e) {
+      if (e.target === chatDock) {
+        openChatFromNavigation();
+      }
+    });
+  }
+
+  syncChatFromHash();
 
   function addUserBubble(text) {
     const bubble = document.createElement("div");
