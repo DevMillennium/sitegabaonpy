@@ -32,12 +32,26 @@ function buildWhatsAppUrl(text) {
 if (chatToggle && chatWidget && chatMessages && chatForm && chatInput) {
   const history = [];
 
+  function setChatOpen(wantOpen) {
+    if (wantOpen) {
+      chatWidget.removeAttribute("hidden");
+    } else {
+      chatWidget.setAttribute("hidden", "");
+    }
+    chatToggle.setAttribute("aria-expanded", String(wantOpen));
+    if (wantOpen) {
+      window.requestAnimationFrame(function () {
+        chatInput.focus();
+      });
+    }
+  }
+
+  function toggleChatPanel() {
+    setChatOpen(chatWidget.hasAttribute("hidden"));
+  }
+
   function openChatFromNavigation() {
-    chatWidget.hidden = false;
-    chatToggle.setAttribute("aria-expanded", "true");
-    window.requestAnimationFrame(function () {
-      chatInput.focus();
-    });
+    setChatOpen(true);
   }
 
   function syncChatFromHash() {
@@ -270,14 +284,23 @@ if (chatToggle && chatWidget && chatMessages && chatForm && chatInput) {
     return data;
   }
 
-  chatToggle.addEventListener("click", function () {
-    const open = !chatWidget.hidden;
-    chatWidget.hidden = open;
-    chatToggle.setAttribute("aria-expanded", String(!open));
-    if (!open) {
-      chatInput.focus();
-    }
-  });
+  if (chatDock) {
+    chatDock.addEventListener("click", function (ev) {
+      if (ev.target.closest && ev.target.closest("#chat-drag-handle")) {
+        return;
+      }
+      if (!ev.target.closest || !ev.target.closest("#chat-toggle")) {
+        return;
+      }
+      ev.preventDefault();
+      toggleChatPanel();
+    });
+  } else {
+    chatToggle.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      toggleChatPanel();
+    });
+  }
 
   if (chatLeadForm) {
     chatLeadForm.addEventListener("submit", async function (event) {
