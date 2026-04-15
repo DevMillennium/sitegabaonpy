@@ -81,6 +81,7 @@ a {
   justify-content: space-between;
   padding: 0.8rem 0;
   gap: 1rem;
+  position: relative;
 }
 
 .brand {
@@ -122,6 +123,22 @@ a {
   color: #fff5e0;
   border-color: rgba(242, 179, 95, 0.75);
   background: rgba(242, 179, 95, 0.16);
+}
+
+.nav-toggle {
+  display: none;
+  border: 1px solid #2f3550;
+  background: #121725;
+  color: var(--text);
+  border-radius: 10px;
+  padding: 0.48rem 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
 }
 
 .btn {
@@ -1040,6 +1057,41 @@ h2 {
 
   .nav nav {
     display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: calc(100% + 0.45rem);
+    left: 1rem;
+    right: 1rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.45rem;
+    border-radius: 12px;
+    border: 1px solid #2a2f41;
+    background: rgba(10, 12, 18, 0.98);
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .nav-menu a {
+    display: block;
+    padding: 0.55rem 0.6rem;
+    border-radius: 8px;
+  }
+
+  .nav-menu a:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav-menu.is-open {
+    display: flex;
   }
 
   .chat-dock {

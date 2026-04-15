@@ -3,7 +3,7 @@
  */
 export const STORE_FACTS = {
   company: "Gabaon Store Paraguay",
-  product: "Garbaon Premium Multipeptide Cream 50ml",
+  product: "Gabaon Premium Multipeptide Cream 50ml",
   priceGuarani: "₲ 550.000",
   priceNote: "El precio publicado puede variar según promociones vigentes; confirmar por WhatsApp.",
   wholesale: "Mayorista: desde 10 unidades a ₲ 450.000.",

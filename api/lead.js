@@ -27,7 +27,7 @@ export default async function handler(req, res) {
   const nombre = sanitize(body.nombre, 200);
   const telefono = sanitize(body.telefono, 80);
   const ciudad = sanitize(body.ciudad, 120) || "Paraguay";
-  const producto = sanitize(body.producto, 200) || "Garbaon — consulta chat";
+  const producto = sanitize(body.producto, 200) || "Gabaon — consulta chat";
   const variante_ab = body.variante_ab === "B" ? "B" : "A";
   const pageUrl = sanitize(body.url, 500);
   const email = sanitize(body.email, 200);

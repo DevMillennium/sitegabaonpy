@@ -1,6 +1,6 @@
 const SITE_CONTEXT = `
 Empresa: Gabaon Store Paraguay.
-Producto principal: Garbaon Premium Multipeptide Cream 50ml (marca Gabaón).
+Producto principal: Gabaon Premium Multipeptide Cream 50ml (marca Gabaon).
 Referencia/código de barras reportado en tiendas: 8809738591994.
 Origen reportado: Corea.
 Precio publicado local: ₲ 550.000 (puede cambiar por promociones).
@@ -42,7 +42,7 @@ function buildSystemPrompt() {
   return [
     "Te llamás Fernanda y sos responsable por la atención al consumidor de Gabaon Store.",
     "Nunca digas que sos IA, asistente virtual, bot o modelo.",
-    "Atendé ventas y soporte de Garbaon Premium Multipeptide Cream 50ml.",
+    "Atendé ventas y soporte de Gabaon Premium Multipeptide Cream 50ml.",
     "Idioma por defecto: español de Paraguay (cercano, claro, comercial y profesional).",
     "Si el usuario escribe en otro idioma, respondé en ese mismo idioma automáticamente.",
     "Usá solo información real del contexto y evitá inventar políticas, stock o resultados médicos.",
@@ -54,6 +54,48 @@ function buildSystemPrompt() {
     "Contexto del negocio y producto:",
     SITE_CONTEXT
   ].join("\n");
+}
+
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 16;
+const ALLOWED_ORIGINS = new Set(["https://gabaon.store", "http://127.0.0.1:8080", "http://localhost:8080"]);
+const rateLimitStore = globalThis.__gabaonRateLimitStore || new Map();
+globalThis.__gabaonRateLimitStore = rateLimitStore;
+
+function getHeader(req, key) {
+  if (!req || !req.headers) return "";
+  const value = req.headers[key] || req.headers[key.toLowerCase()] || "";
+  return String(Array.isArray(value) ? value[0] : value);
+}
+
+function getClientIp(req) {
+  const xff = getHeader(req, "x-forwarded-for");
+  if (xff) return xff.split(",")[0].trim();
+  const realIp = getHeader(req, "x-real-ip");
+  if (realIp) return realIp.trim();
+  return "unknown";
+}
+
+function isAllowedOrigin(req) {
+  const origin = getHeader(req, "origin");
+  if (!origin) return true;
+  return ALLOWED_ORIGINS.has(origin);
+}
+
+function enforceRateLimit(clientId) {
+  const now = Date.now();
+  const bucket = rateLimitStore.get(clientId) || [];
+  const recent = bucket.filter((ts) => now - ts < RATE_LIMIT_WINDOW_MS);
+  recent.push(now);
+  rateLimitStore.set(clientId, recent);
+
+  for (const [key, hits] of rateLimitStore.entries()) {
+    if (!hits.length || now - hits[hits.length - 1] > RATE_LIMIT_WINDOW_MS * 2) {
+      rateLimitStore.delete(key);
+    }
+  }
+
+  return recent.length <= RATE_LIMIT_MAX_REQUESTS;
 }
 
 function cleanMessages(messages) {
@@ -73,15 +115,32 @@ export default async function handler(req, res) {
     return;
   }
 
+  if (!isAllowedOrigin(req)) {
+    res.status(403).json({ error: "Origem não permitida." });
+    return;
+  }
+
   const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
     res.status(500).json({ error: "DEEPSEEK_API_KEY não configurada no ambiente." });
     return;
   }
 
+  const clientId = getClientIp(req);
+  if (!enforceRateLimit(clientId)) {
+    res.status(429).json({ error: "Muitas solicitações. Tente novamente em instantes." });
+    return;
+  }
+
   const history = cleanMessages(req.body && req.body.messages);
   if (!history.length) {
     res.status(400).json({ error: "Mensagem vazia." });
+    return;
+  }
+
+  const lastMessage = history[history.length - 1];
+  if (!lastMessage || !lastMessage.content || lastMessage.content.trim().length < 2) {
+    res.status(400).json({ error: "Mensagem inválida." });
     return;
   }
 

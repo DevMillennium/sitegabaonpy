@@ -3,6 +3,8 @@ const videoEmpresa = document.getElementById("video-empresa");
 const heroHeadline = document.getElementById("hero-headline");
 const heroLead = document.getElementById("hero-lead");
 const ctaComprar = document.getElementById("comprar");
+const navToggle = document.getElementById("nav-toggle");
+const navMenu = document.getElementById("nav-menu");
 
 const config = window.LANDING_CONFIG || {};
 const numeroEmpresa = config.whatsappNumber || "595992799800";
@@ -64,9 +66,34 @@ function trackEvent(name, params) {
 
 initAnalytics();
 
+function initMobileNav() {
+  if (!navToggle || !navMenu) return;
+
+  const closeMenu = () => {
+    navMenu.classList.remove("is-open");
+    navToggle.setAttribute("aria-expanded", "false");
+  };
+
+  navToggle.addEventListener("click", () => {
+    const willOpen = !navMenu.classList.contains("is-open");
+    navMenu.classList.toggle("is-open", willOpen);
+    navToggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+  });
+
+  navMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 940) closeMenu();
+  });
+}
+
+initMobileNav();
+
 const variants = {
   A: {
-    headline: "Garbaon Premium Multipeptide Cream",
+    headline: "Gabaon Premium Multipeptide Cream",
     lead:
       "Cuidado facial avanzado de origen coreano con venta y logística desde Gabaon Store (Paraguay).",
     cta: "Reservar por WhatsApp"
@@ -74,8 +101,8 @@ const variants = {
   B: {
     headline: "Piel más firme e hidratada con rutina premium",
     lead:
-      "Descubrí Garbaon 50ml con experiencia de compra local en Paraguay junto a Gabaon Store.",
-    cta: "Quiero mi Garbaon hoy"
+      "Descubrí Gabaon 50ml con experiencia de compra local en Paraguay junto a Gabaon Store.",
+    cta: "Quiero mi Gabaon hoy"
   }
 };
 
@@ -94,7 +121,7 @@ window.garbaonAbVariant = activeVariant;
 
 function buildWhatsAppUrl() {
   const mensaje =
-    "Hola Gabaon Store, quiero información sobre Garbaon Premium Multipeptide Cream 50ml. " +
+    "Hola Gabaon Store, quiero información sobre Gabaon Premium Multipeptide Cream 50ml. " +
     `Variante landing: ${activeVariant}.`;
   return `https://wa.me/${numeroEmpresa}?text=${encodeURIComponent(mensaje)}`;
 }

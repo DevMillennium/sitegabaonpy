@@ -1,6 +1,6 @@
-# Landing Garbaon — Gabaon Store
+# Landing Gabaon — Gabaon Store
 
-Landing em espanhol (Paraguai) para **Garbaon Premium Multipeptide Cream**, com CTAs para **WhatsApp** e teste A/B no hero.
+Landing em espanhol (Paraguai) para **Gabaon Premium Multipeptide Cream**, com CTAs para **WhatsApp** e teste A/B no hero.
 
 ## Produção
 
