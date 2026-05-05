@@ -8,6 +8,7 @@
   "scripts": {
     "build": "node -e \"require('fs').accessSync('index.html')\"",
     "extract:knowledge": "node scripts/extract-knowledge.mjs",
-    "vercel:unpause": "bash scripts/vercel-unpause.sh"
+    "vercel:unpause": "bash scripts/vercel-unpause.sh",
+    "repo:sync": "bash scripts/repo-sync.sh"
   }
 }
