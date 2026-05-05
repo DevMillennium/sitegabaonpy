@@ -7,6 +7,7 @@
   },
   "scripts": {
     "build": "node -e \"require('fs').accessSync('index.html')\"",
-    "extract:knowledge": "node scripts/extract-knowledge.mjs"
+    "extract:knowledge": "node scripts/extract-knowledge.mjs",
+    "vercel:unpause": "bash scripts/vercel-unpause.sh"
   }
 }
