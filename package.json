@@ -2,7 +2,11 @@
   "name": "gabaon-store-landing",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
+    "build": "node -e \"require('fs').accessSync('index.html')\"",
     "extract:knowledge": "node scripts/extract-knowledge.mjs"
   }
 }
