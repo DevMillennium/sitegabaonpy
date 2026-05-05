@@ -1,0 +1,159 @@
+# Verifica o site em produção e tenta recuperar automaticamente (402 DEPLOYMENT_DISABLED, erros graves, etc.).
+#
+# Segredos opcionais (GitHub → Settings → Secrets → Actions):
+#   VERCEL_DEPLOY_HOOK     — URL do Deploy Hook
+#   VERCEL_TOKEN           — Vercel → Account → Tokens
+#   VERCEL_PROJECT_ID      — Projeto → Settings → General → Project ID
+#   VERCEL_TEAM_ID         — Opcional (equipa); Hobby pessoal deixar vazio
+#   VERCEL_PROJECT_NAME    — Opcional; se vazio usa o nome do repositório GitHub
+#
+# Variável opcional (Settings → Variables → Actions):
+#   SITE_HEALTH_URL        — predefinição: https://gabaon.store/
+
+name: Verificar site e recuperar
+
+on:
+  schedule:
+    - cron: "15 */4 * * *"
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Manter deploy Vercel ativo"]
+    types: [completed]
+
+concurrency:
+  group: vercel-verificacao-recuperacao
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  verificar-e-recuperar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Teste HTTP do site (corpo + cabeçalhos)
+        id: health
+        env:
+          SITE_HEALTH_URL: ${{ vars.SITE_HEALTH_URL }}
+        run: |
+          URL="${SITE_HEALTH_URL:-https://gabaon.store/}"
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          code=$(curl -sS -D /tmp/health.hdr -o /tmp/health.htm -w "%{http_code}" -L --max-time 45 "$URL" || echo "000")
+          echo "http_code=$code" >> "$GITHUB_OUTPUT"
+          if [ "$code" = "200" ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Resposta inicial: HTTP $code"
+          grep -i "vercel-error" /tmp/health.hdr >/dev/null 2>&1 && cat /tmp/health.hdr >&2 || true
+
+      - name: Sair — site em ordem
+        if: steps.health.outputs.ok == 'true'
+        run: echo "Produção responde HTTP 200; verificação concluída."
+
+      - uses: actions/checkout@v4
+        if: steps.health.outputs.ok != 'true'
+        with:
+          fetch-depth: 40
+          ref: >-
+            ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch
+            || github.ref_name
+            || 'main' }}
+
+      - name: Recuperação (unpause + hook + API + push opcional)
+        if: steps.health.outputs.ok != 'true'
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VERCEL_PROJECT_NAME: ${{ secrets.VERCEL_PROJECT_NAME }}
+        run: |
+          set -e
+          BRANCH="$(git branch --show-current)"
+
+          ORG="${GITHUB_REPOSITORY%%/*}"
+          REPO="${GITHUB_REPOSITORY#*/}"
+          PROJ="${VERCEL_PROJECT_NAME:-$REPO}"
+          DQ="skipAutoDetectionConfirmation=1"
+          [ -n "$VERCEL_TEAM_ID" ] && DQ="${DQ}&teamId=${VERCEL_TEAM_ID}"
+
+          echo "::warning::Falha na verificação (HTTP ${{ steps.health.outputs.http_code }}). Tentativa automática de recuperação."
+
+          if [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+            echo "→ Unpause do projeto..."
+            unpause_team=""
+            [ -n "$VERCEL_TEAM_ID" ] && unpause_team="?teamId=${VERCEL_TEAM_ID}"
+            curl -sS -w "\ncurl_unpause:%{http_code}\n" -X POST \
+              "https://api.vercel.com/v1/projects/${VERCEL_PROJECT_ID}/unpause${unpause_team}" \
+              -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+              -H "Accept: application/json" \
+              || true
+            sleep 15
+          else
+            echo "(Opcional sem token/ID da Vercel: configure VERCEL_TOKEN e VERCEL_PROJECT_ID para unpause via API.)"
+          fi
+
+          if [ -n "$VERCEL_DEPLOY_HOOK" ]; then
+            echo "→ Deploy Hook..."
+            curl -fsS -X POST "$VERCEL_DEPLOY_HOOK" || true
+            sleep 45
+          fi
+
+          if [ -n "$VERCEL_TOKEN" ] && [ -n "$PROJ" ]; then
+            echo "→ Novo deployment (production via gitSource)..."
+            BODY=$(jq -n \
+              --arg name "$PROJ" \
+              --arg org "$ORG" \
+              --arg repo "$REPO" \
+              --arg ref "$BRANCH" \
+              '{name: $name, target: "production", gitSource: {type: "github", org: $org, repo: $repo, ref: $ref}}')
+            curl -sS -w "\ncurl_deploy:%{http_code}\n" -X POST \
+              "https://api.vercel.com/v13/deployments?${DQ}" \
+              -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+              -H "Content-Type: application/json" \
+              -d "$BODY" \
+              || true
+            sleep 90
+          fi
+
+          LAST_MSG="$(git log -1 --pretty=%s 2>/dev/null || true)"
+          LAST_TS="$(git log -1 --format=%ct 2>/dev/null || echo 0)"
+          NOW="$(date +%s)"
+          if echo "$LAST_MSG" | grep -q "ci(auto): recuperação" && [ "$LAST_TS" -gt 0 ] && [ "$((NOW - LAST_TS))" -lt 10800 ]; then
+            echo "::notice::Push de recuperação omitido (<3h) — já houve ciclo recente."
+          else
+            echo "→ Commit vazio (integração Git → Vercel)..."
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git fetch origin "$BRANCH" --depth 40 2>/dev/null || true
+            git pull --rebase origin "$BRANCH" || true
+            git commit --allow-empty -m "ci(auto): recuperação — falha na verificação HTTP do site"
+            git push origin "$BRANCH" || {
+              echo "::error::git push falhou (branch protegido?). Configure VERCEL_DEPLOY_HOOK ou VERCEL_TOKEN + deploy na API."
+              exit 1
+            }
+          fi
+
+      - name: Re-testar site
+        if: steps.health.outputs.ok != 'true'
+        env:
+          SITE_HEALTH_URL: ${{ vars.SITE_HEALTH_URL }}
+        run: |
+          set -e
+          URL="${SITE_HEALTH_URL:-https://gabaon.store/}"
+          sleep 30
+          code=$(curl -sS -o /dev/null -w "%{http_code}" -L --max-time 45 "$URL" || echo "000")
+          echo "Nova verificação: HTTP $code"
+          attempts=6
+          while [ "$code" != "200" ] && [ "$attempts" -gt 0 ]; do
+            sleep 35
+            code=$(curl -sS -o /dev/null -w "%{http_code}" -L --max-time 45 "$URL" || echo "000")
+            attempts=$((attempts - 1))
+          done
+          if [ "$code" != "200" ]; then
+            echo "::error::O site não respondeu 200 depois das tentativas. Revê na Vercel: projeto não pauso, quotas, associação do domínio ao deployment atual e Billing."
+            exit 1
+          fi
+          echo "::notice::Recuperação verificada: HTTP 200."

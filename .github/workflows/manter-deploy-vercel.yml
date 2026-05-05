@@ -1,4 +1,5 @@
 # Evita que o projeto fique inativo na Vercel (ex.: deploy desativado / pausa no Hobby).
+# Depois de cada execução com sucesso, o workflow «Verificar site e recuperar» faz teste HTTP a gabaon.store.
 #
 # Opção A (recomendada): Vercel → Settings → Git → Deploy Hooks → criar hook na branch de produção.
 #         GitHub → Settings → Secrets → Actions → VERCEL_DEPLOY_HOOK = URL completa do hook.
