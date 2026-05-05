@@ -1,25 +1,41 @@
-# Mantém atividade no deploy da Vercel (evita projeto pausado por inatividade no plano Hobby).
-# 1. Vercel → Projeto → Settings → Git → Deploy Hooks → criar hook na branch production/main.
-# 2. GitHub → Repositório → Settings → Secrets → Actions → criar VERCEL_DEPLOY_HOOK com a URL completa do hook.
-# Sem o segredo, este workflow falha de propósito no passo curl (para não mascarar configuração em falta).
+# Evita que o projeto fique inativo na Vercel (ex.: deploy desativado / pausa no Hobby).
+#
+# Opção A (recomendada): Vercel → Settings → Git → Deploy Hooks → criar hook na branch de produção.
+#         GitHub → Settings → Secrets → Actions → VERCEL_DEPLOY_HOOK = URL completa do hook.
+#         Só dispara POST — não polui o histórico de commits.
+#
+# Opção B (automática): se VERCEL_DEPLOY_HOOK não existir, faz push de commit vazio na branch
+#         atual (dispara o mesmo deploy automático que já tens ao guardar no GitHub).
 
 name: Manter deploy Vercel ativo
 
 on:
   schedule:
-    - cron: "0 14 * * 1"
+    - cron: "30 12 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  disparar-deploy-hook:
+  redespero-preventivo:
     runs-on: ubuntu-latest
     steps:
-      - name: Disparar Deploy Hook (POST)
+      - uses: actions/checkout@v4
+
+      - name: Deploy Hook ou commit vazio
         env:
           VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
         run: |
-          if [ -z "$VERCEL_DEPLOY_HOOK" ]; then
-            echo "::error::Configure o segredo VERCEL_DEPLOY_HOOK no GitHub (URL do Deploy Hook na Vercel)."
-            exit 1
+          set -e
+          BRANCH="${GITHUB_REF_NAME:-main}"
+          if [ -n "$VERCEL_DEPLOY_HOOK" ]; then
+            curl -fsS -X POST "$VERCEL_DEPLOY_HOOK"
+            exit 0
           fi
-          curl -fsS -X POST "$VERCEL_DEPLOY_HOOK"
+          echo "::notice::Sem VERCEL_DEPLOY_HOOK — usando commit vazio para disparar redeploy (integração Git → Vercel)."
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin "$BRANCH"
+          git commit --allow-empty -m "ci: redespero preventivo (manter Vercel ativo)"
+          git push origin "$BRANCH"
