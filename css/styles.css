@@ -386,6 +386,67 @@ h2 {
   margin-top: 0;
 }
 
+.trust-strip {
+  padding: 1.2rem 0 1.8rem;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.trust-grid article {
+  border: 1px solid #2a2f41;
+  border-radius: 14px;
+  padding: 0.8rem 0.85rem;
+  background: linear-gradient(160deg, rgba(242, 179, 95, 0.09), rgba(255, 255, 255, 0.02));
+}
+
+.trust-grid h3 {
+  margin: 0 0 0.25rem;
+  font-size: 0.92rem;
+}
+
+.trust-grid p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+.goal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.goal-card {
+  text-align: left;
+  border: 1px solid #2d3248;
+  border-radius: 16px;
+  padding: 0.95rem 1rem;
+  background: linear-gradient(170deg, rgba(105, 171, 255, 0.08), rgba(255, 255, 255, 0.02));
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.goal-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(242, 179, 95, 0.62);
+}
+
+.goal-card strong {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.goal-card span {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
 .reviews-carousel {
   overflow: hidden;
   mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
@@ -1137,6 +1198,11 @@ h2 {
   }
 
   .luxury-products {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-grid,
+  .goal-grid {
     grid-template-columns: 1fr;
   }
 

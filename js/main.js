@@ -126,10 +126,29 @@ function buildWhatsAppUrl() {
   return `https://wa.me/${numeroEmpresa}?text=${encodeURIComponent(mensaje)}`;
 }
 
+function buildWhatsAppUrlByIntent(intent) {
+  const messages = {
+    "multipeptide-cream-50ml":
+      "Hola Gabaon Store, quiero reservar Premium Multipeptide Cream 50mL. ¿Precio final y entrega hoy en Asunción?",
+    "idebenone-ampoule-3x10ml":
+      "Hola Gabaon Store, quiero reservar Idebenone Prestige Ampoule 3x10mL. ¿Precio final y disponibilidad?",
+    "collagen-essence-mask-3u":
+      "Hola Gabaon Store, quiero reservar Collagen Essence Mask (3 unidades). ¿Precio final y envío?",
+    "hyaluronic-acid-mask-3u":
+      "Hola Gabaon Store, quiero reservar Hyaluronic Acid Mask (3 unidades). ¿Precio final y envío?",
+    "catalogo-completo":
+      "Hola Gabaon Store, quiero el catálogo completo con recomendación para mi piel (Multipeptide, Idebenone, Collagen Mask e Hyaluronic Mask).",
+    "asesoria-vip":
+      "Hola Gabaon Store, quiero una asesoría VIP para elegir mi rutina ideal y cerrar compra hoy."
+  };
+  const message = messages[intent] || messages["catalogo-completo"];
+  return `https://wa.me/${numeroEmpresa}?text=${encodeURIComponent(`${message} Variante landing: ${activeVariant}.`)}`;
+}
+
 function wireWhatsAppLinks() {
-  const url = buildWhatsAppUrl();
   document.querySelectorAll(".js-wa-link").forEach((el) => {
-    el.href = url;
+    const intent = el.getAttribute("data-wa-product");
+    el.href = intent ? buildWhatsAppUrlByIntent(intent) : buildWhatsAppUrl();
   });
 }
 
@@ -138,6 +157,21 @@ if (heroLead) heroLead.textContent = variantData.lead;
 if (ctaComprar) ctaComprar.textContent = variantData.cta;
 
 wireWhatsAppLinks();
+
+document.querySelectorAll(".js-goal-wa").forEach((button) => {
+  button.addEventListener("click", () => {
+    const goal = button.getAttribute("data-goal");
+    const map = {
+      "firmeza-lineas": "multipeptide-cream-50ml",
+      "antioxidante-manchas": "idebenone-ampoule-3x10ml",
+      "firmeza-semanal": "collagen-essence-mask-3u",
+      "hidratacion-intensa": "hyaluronic-acid-mask-3u"
+    };
+    const intent = map[goal] || "catalogo-completo";
+    window.open(buildWhatsAppUrlByIntent(intent), "_blank", "noopener,noreferrer");
+    trackEvent("goal_diagnostic_selected", { variant: activeVariant, goal: goal || "unknown", intent });
+  });
+});
 
 if (anio) {
   anio.textContent = String(new Date().getFullYear());
