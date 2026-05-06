@@ -687,10 +687,26 @@ h2 {
 
 .product-media-scroll img {
   width: 100%;
-  height: 250px;
+  height: 320px;
   object-fit: cover;
   scroll-snap-align: start;
   flex-shrink: 0;
+}
+
+.luxury-card:nth-child(1) .product-media-scroll img {
+  object-position: center 35%;
+}
+
+.luxury-card:nth-child(2) .product-media-scroll img {
+  object-position: center 40%;
+}
+
+.luxury-card:nth-child(3) .product-media-scroll img {
+  object-position: center 28%;
+}
+
+.luxury-card:nth-child(4) .product-media-scroll img {
+  object-position: center 30%;
 }
 
 .product-media-scroll::-webkit-scrollbar {
@@ -722,7 +738,19 @@ h2 {
   background:
     radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.3), transparent 58%),
     linear-gradient(180deg, #fff, #f4ebdc);
-  padding: 0.35rem;
+  padding: 0.2rem;
+}
+
+@media (max-width: 1200px) {
+  .product-media-scroll img {
+    height: 300px;
+  }
+}
+
+@media (max-width: 940px) {
+  .product-media-scroll img {
+    height: 270px;
+  }
 }
 
 .luxury-card-body {
