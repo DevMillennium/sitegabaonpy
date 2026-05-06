@@ -121,7 +121,7 @@ window.garbaonAbVariant = activeVariant;
 
 function buildWhatsAppUrl() {
   const mensaje =
-    "Hola Gabaon Store, quiero información sobre la colección completa (Multipeptide Cream, Idebenone Ampoule y máscaras de colágeno + ácido hialurónico). " +
+    "Hola Gabaon Store, quiero información sobre la colección completa (Multipeptide Cream, Idebenone Ampoule, Collagen Mask e Hyaluronic Acid Mask). " +
     `Variante landing: ${activeVariant}.`;
   return `https://wa.me/${numeroEmpresa}?text=${encodeURIComponent(mensaje)}`;
 }

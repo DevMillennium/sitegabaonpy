@@ -4,7 +4,7 @@
 export const STORE_FACTS = {
   company: "Gabaon Store Paraguay",
   product:
-    "Colección Gabaon: Premium Multipeptide Cream 50ml, Idebenone Prestige Ampoule 3x10ml y máscaras de colágeno + ácido hialurónico",
+    "Colección Gabaon: Premium Multipeptide Cream 50ml, Idebenone Prestige Ampoule 3x10ml, Collagen Essence Mask y Hyaluronic Acid Mask",
   priceGuarani: "Desde ₲ 450.000",
   priceNote: "El precio publicado puede variar según promociones vigentes; confirmar por WhatsApp.",
   wholesale: "Mayorista: desde 10 unidades a ₲ 450.000 (según producto y disponibilidad).",
@@ -15,7 +15,7 @@ export const STORE_FACTS = {
   whatsappE164: "595992799800",
   siteUrl: "https://gabaon.store",
   usage:
-    "Uso sugerido: rutina día y noche; Idebenone requiere activación previa de ampolla, y máscaras se aplican según indicación de la línea.",
+    "Uso sugerido: rutina día y noche; Idebenone requiere activación previa de ampolla y cada máscara se aplica según su línea específica.",
   disclaimer: "Producto cosmético; no reemplaza tratamiento dermatológico."
 };
 
