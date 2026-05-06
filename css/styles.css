@@ -32,31 +32,46 @@ body {
   line-height: 1.6;
 }
 
+/* Padrão único: pílula creme + bronze escuro (header e hero) */
+.brand,
 .brand-seal {
   display: inline-flex;
   align-items: center;
   gap: 0.65rem;
-  margin-bottom: 0.65rem;
-  padding: 0.35rem 0.85rem 0.35rem 0.42rem;
+  padding: 0.35rem 0.95rem 0.35rem 0.38rem;
   border-radius: 999px;
-  border: 1.5px solid rgba(138, 98, 38, 0.78);
-  background: rgba(255, 252, 247, 0.95);
-  box-shadow: 0 4px 18px rgba(61, 43, 19, 0.12);
+  border: 1px solid rgba(107, 74, 30, 0.92);
+  background: #fdfbf7;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset, 0 4px 20px rgba(45, 32, 14, 0.1);
 }
 
+.brand-seal {
+  margin-bottom: 0.65rem;
+}
+
+.brand img,
 .brand-seal img {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 2px solid #7a5826;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 2px solid #5c4018;
+  box-shadow: 0 0 0 1px #fdfbf7, 0 0 0 3px #7a5826;
 }
 
+.brand span,
 .brand-seal span {
-  font-size: 0.76rem;
-  letter-spacing: 0.09em;
+  font-size: clamp(0.74rem, 2.1vw, 0.82rem);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #271c12;
+  color: #1c1410;
   font-weight: 800;
+}
+
+.brand span {
+  font-size: clamp(0.78rem, 2.35vw, 0.88rem);
+  letter-spacing: 0.11em;
 }
 
 img,
@@ -111,33 +126,6 @@ a {
   padding: 0.8rem 0;
   gap: 1rem;
   position: relative;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  font-weight: 600;
-  padding: 0.28rem 0.85rem 0.28rem 0.4rem;
-  border-radius: 999px;
-  border: 1.5px solid rgba(138, 98, 38, 0.78);
-  background: rgba(255, 252, 247, 0.95);
-  box-shadow: 0 4px 18px rgba(61, 43, 19, 0.1);
-}
-
-.brand img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid #7a5826;
-  flex-shrink: 0;
-}
-
-.brand span {
-  font-size: 0.94rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #1a130c;
 }
 
 .nav nav {
