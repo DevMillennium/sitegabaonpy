@@ -112,7 +112,12 @@ function buildSystemPrompt() {
 
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 16;
-const ALLOWED_ORIGINS = new Set(["https://gabaon.store", "http://127.0.0.1:8080", "http://localhost:8080"]);
+const ALLOWED_ORIGINS = new Set([
+  "https://gabaon.store",
+  "https://www.gabaon.store",
+  "http://127.0.0.1:8080",
+  "http://localhost:8080"
+]);
 const EXTRA_ALLOWED_ORIGINS = (process.env.CHAT_ALLOWED_ORIGINS || "")
   .split(",")
   .map((s) => s.trim())
@@ -135,11 +140,20 @@ function getClientIp(req) {
   return "unknown";
 }
 
-function isAllowedOrigin(req) {
+function getOriginPolicy(req) {
   const origin = getHeader(req, "origin");
-  if (!origin) return true;
-  if (ALLOWED_ORIGINS.has(origin)) return true;
-  return EXTRA_ALLOWED_ORIGINS.includes(origin);
+  if (!origin) return { ok: true, origin: "" };
+  if (ALLOWED_ORIGINS.has(origin)) return { ok: true, origin };
+  if (EXTRA_ALLOWED_ORIGINS.includes(origin)) return { ok: true, origin };
+  return { ok: false, origin };
+}
+
+function applyCors(res, origin) {
+  if (!origin) return;
+  res.setHeader("Access-Control-Allow-Origin", origin);
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Vary", "Origin");
 }
 
 function enforceRateLimit(clientId) {
@@ -170,15 +184,29 @@ function cleanMessages(messages) {
 }
 
 export default async function handler(req, res) {
+  const policy = getOriginPolicy(req);
+
+  if (req.method === "OPTIONS") {
+    if (!policy.ok) {
+      res.status(403).end();
+      return;
+    }
+    applyCors(res, policy.origin);
+    res.status(204).end();
+    return;
+  }
+
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
     return;
   }
 
-  if (!isAllowedOrigin(req)) {
+  if (!policy.ok) {
     res.status(403).json({ error: "Origen no permitido." });
     return;
   }
+
+  applyCors(res, policy.origin);
 
   const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {

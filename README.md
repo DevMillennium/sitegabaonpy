@@ -33,7 +33,7 @@ Landing em espanhol (Paraguai) para **Gabaon Idebenone Prestige Ampoule (kit 3x1
 3. Chave del asistente (nunca en el repo ni en `js/`): crear un archivo local copiando `.env.example` → `.env` **solo para pruebas**, y en producción usar Vercel → Project → Settings → Environment Variables:
    - `DEEPSEEK_API_KEY` — obligatoria; la obtienes en la consola de DeepSeek.
    - `DEEPSEEK_MODEL` — opcional (por defecto `deepseek-chat`).
-   - `CHAT_ALLOWED_ORIGINS` — opcional; URLs adicionales separadas por coma si probás en un dominio de preview (además de `https://gabaon.store` y localhost:8080).
+   - `CHAT_ALLOWED_ORIGINS` — opcional; URLs adicionales separadas por coma (previews propios); en código ya están `https://gabaon.store` y `https://www.gabaon.store` más localhost.
 
    Comportamiento: Fernanda responde sobre marca y productos; **solo después de cualificar** (producto elegido + ciudad/entrega + intención clara de compra/reserva) indica el WhatsApp oficial de cierre. Consultas directas del tipo “¿cuál es el teléfono?” se responden sin exigir ese flujo.
 
