@@ -93,15 +93,15 @@ initMobileNav();
 
 const variants = {
   A: {
-    headline: "Gabaon Premium Multipeptide Cream",
+    headline: "Gabaon Idebenone Prestige Ampoule",
     lead:
-      "Cuidado facial avanzado de origen coreano con venta y logística desde Gabaon Store (Paraguay).",
+      "Kit antiedad con 3 ampolas de 10mL, de origen coreano, con venta y logística desde Gabaon Store (Paraguay).",
     cta: "Reservar por WhatsApp"
   },
   B: {
-    headline: "Piel más firme e hidratada con rutina premium",
+    headline: "Piel más firme y elástica con Idebenone",
     lead:
-      "Descubrí Gabaon 50ml con experiencia de compra local en Paraguay junto a Gabaon Store.",
+      "Descubrí el kit Idebenone 3x10mL con experiencia de compra local en Paraguay junto a Gabaon Store.",
     cta: "Quiero mi Gabaon hoy"
   }
 };
@@ -121,7 +121,7 @@ window.garbaonAbVariant = activeVariant;
 
 function buildWhatsAppUrl() {
   const mensaje =
-    "Hola Gabaon Store, quiero información sobre Gabaon Premium Multipeptide Cream 50ml. " +
+    "Hola Gabaon Store, quiero información sobre Gabaon Idebenone Prestige Ampoule (kit 3x10mL). " +
     `Variante landing: ${activeVariant}.`;
   return `https://wa.me/${numeroEmpresa}?text=${encodeURIComponent(mensaje)}`;
 }

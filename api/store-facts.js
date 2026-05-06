@@ -3,7 +3,7 @@
  */
 export const STORE_FACTS = {
   company: "Gabaon Store Paraguay",
-  product: "Gabaon Premium Multipeptide Cream 50ml",
+  product: "Gabaon Idebenone Prestige Ampoule (kit 3 x 10ml)",
   priceGuarani: "₲ 550.000",
   priceNote: "El precio publicado puede variar según promociones vigentes; confirmar por WhatsApp.",
   wholesale: "Mayorista: desde 10 unidades a ₲ 450.000.",
@@ -13,7 +13,8 @@ export const STORE_FACTS = {
   whatsappDisplay: "+595 099 279 9800",
   whatsappE164: "595992799800",
   siteUrl: "https://gabaon.store",
-  usage: "Uso sugerido: mañana y noche sobre piel limpia.",
+  usage:
+    "Uso sugerido: activar la ampolla (giro + botón), agitar 15-20 veces y aplicar mañana y noche sobre piel limpia.",
   disclaimer: "Producto cosmético; no reemplaza tratamiento dermatológico."
 };
 
