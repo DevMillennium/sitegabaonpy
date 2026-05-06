@@ -3,10 +3,11 @@
  */
 export const STORE_FACTS = {
   company: "Gabaon Store Paraguay",
-  product: "Gabaon Idebenone Prestige Ampoule (kit 3 x 10ml)",
-  priceGuarani: "₲ 550.000",
+  product:
+    "Colección Gabaon: Premium Multipeptide Cream 50ml, Idebenone Prestige Ampoule 3x10ml y máscaras de colágeno + ácido hialurónico",
+  priceGuarani: "Desde ₲ 450.000",
   priceNote: "El precio publicado puede variar según promociones vigentes; confirmar por WhatsApp.",
-  wholesale: "Mayorista: desde 10 unidades a ₲ 450.000.",
+  wholesale: "Mayorista: desde 10 unidades a ₲ 450.000 (según producto y disponibilidad).",
   deliveryAsuncion: "Entrega: mismo día en Asunción según disponibilidad.",
   deliveryInterior:
     "Interior: encomienda o envío coordinado; costo y plazo informados al confirmar pedido y ciudad.",
@@ -14,7 +15,7 @@ export const STORE_FACTS = {
   whatsappE164: "595992799800",
   siteUrl: "https://gabaon.store",
   usage:
-    "Uso sugerido: activar la ampolla (giro + botón), agitar 15-20 veces y aplicar mañana y noche sobre piel limpia.",
+    "Uso sugerido: rutina día y noche; Idebenone requiere activación previa de ampolla, y máscaras se aplican según indicación de la línea.",
   disclaimer: "Producto cosmético; no reemplaza tratamiento dermatológico."
 };
 

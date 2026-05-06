@@ -93,16 +93,16 @@ initMobileNav();
 
 const variants = {
   A: {
-    headline: "Gabaon Idebenone Prestige Ampoule",
+    headline: "Gabaon Luxury Skincare Collection",
     lead:
-      "Kit antiedad con 3 ampolas de 10mL, de origen coreano, con venta y logística desde Gabaon Store (Paraguay).",
+      "Colección premium con Multipeptide Cream, Idebenone Ampoule y máscaras de colágeno + ácido hialurónico.",
     cta: "Reservar por WhatsApp"
   },
   B: {
-    headline: "Piel más firme y elástica con Idebenone",
+    headline: "Rutina de lujo para firmeza y luminosidad",
     lead:
-      "Descubrí el kit Idebenone 3x10mL con experiencia de compra local en Paraguay junto a Gabaon Store.",
-    cta: "Quiero mi Gabaon hoy"
+      "Atención VIP en Paraguay para elegir entre crema multipeptídeos, ampollas Idebenone y máscaras premium.",
+    cta: "Quiero mi asesoría VIP"
   }
 };
 
@@ -121,7 +121,7 @@ window.garbaonAbVariant = activeVariant;
 
 function buildWhatsAppUrl() {
   const mensaje =
-    "Hola Gabaon Store, quiero información sobre Gabaon Idebenone Prestige Ampoule (kit 3x10mL). " +
+    "Hola Gabaon Store, quiero información sobre la colección completa (Multipeptide Cream, Idebenone Ampoule y máscaras de colágeno + ácido hialurónico). " +
     `Variante landing: ${activeVariant}.`;
   return `https://wa.me/${numeroEmpresa}?text=${encodeURIComponent(mensaje)}`;
 }

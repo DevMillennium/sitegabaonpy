@@ -544,6 +544,61 @@ h2 {
   background: #0b0c11;
 }
 
+.luxury-products {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.luxury-card {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #2a2d3e;
+  background:
+    radial-gradient(circle at top right, rgba(242, 179, 95, 0.13), transparent 45%),
+    linear-gradient(180deg, rgba(22, 25, 37, 0.96), rgba(10, 12, 18, 0.98));
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
+}
+
+.luxury-card img,
+.luxury-card video {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-bottom: 1px solid #2b3043;
+  background: #090b12;
+}
+
+.luxury-card-body {
+  padding: 1rem;
+}
+
+.luxury-badge {
+  display: inline-flex;
+  border: 1px solid rgba(242, 179, 95, 0.45);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.75rem;
+  color: #ffdbac;
+  background: rgba(242, 179, 95, 0.08);
+  margin: 0 0 0.65rem;
+}
+
+.luxury-card-body h3 {
+  margin: 0 0 0.45rem;
+}
+
+.luxury-card-body p {
+  color: var(--muted);
+}
+
+.luxury-card-body ul {
+  margin: 0.7rem 0 1rem;
+  padding-left: 1.1rem;
+  color: #c7c9d6;
+}
+
 .form {
   border-radius: var(--radius);
   border: 1px solid var(--line);
@@ -1078,6 +1133,10 @@ h2 {
   .product-grid,
   .company-grid,
   .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .luxury-products {
     grid-template-columns: 1fr;
   }
 
