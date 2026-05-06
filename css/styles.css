@@ -1,11 +1,11 @@
 :root {
-  --bg: #060606;
-  --bg-elev: #111111;
-  --text: #f4efe6;
-  --muted: #b9ae9a;
+  --bg: #f7f3eb;
+  --bg-elev: #fffdf9;
+  --text: #1e1a14;
+  --muted: #6f6455;
   --brand: #c8a35f;
   --brand-strong: #f2dfb1;
-  --line: #2d261b;
+  --line: #e3d7c4;
   --radius: 18px;
   --container: 1160px;
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
@@ -26,7 +26,7 @@ body {
   padding-bottom: 7rem;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: var(--text);
-  background: radial-gradient(circle at 20% 0%, #1a140f 0%, var(--bg) 48%);
+  background: radial-gradient(circle at 20% 0%, #fffdf8 0%, var(--bg) 58%);
   line-height: 1.6;
 }
 
@@ -97,7 +97,7 @@ a {
   top: 0;
   z-index: 40;
   backdrop-filter: blur(10px);
-  background: rgba(7, 8, 12, 0.75);
+  background: rgba(255, 252, 247, 0.92);
   border-bottom: 1px solid var(--line);
 }
 
@@ -390,8 +390,8 @@ h2 {
 }
 
 .section-dark {
-  background: linear-gradient(180deg, rgba(15, 17, 24, 0.95), rgba(10, 11, 16, 0.95));
-  border-block: 1px solid #151827;
+  background: linear-gradient(180deg, #fffdf9, #f7f1e8);
+  border-block: 1px solid var(--line);
 }
 
 .cards {
@@ -403,7 +403,7 @@ h2 {
 .card {
   padding: 1.3rem;
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.82);
   border: 1px solid var(--line);
 }
 
@@ -596,7 +596,7 @@ h2 {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 1.2rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.75);
 }
 
 .video-shell video {
@@ -759,7 +759,7 @@ h2 {
   border-radius: var(--radius);
   border: 1px solid var(--line);
   padding: 1.25rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .form label {
@@ -772,9 +772,9 @@ h2 {
   width: 100%;
   margin-bottom: 0.9rem;
   border-radius: 12px;
-  border: 1px solid #2c3042;
-  background: #0d1019;
-  color: var(--text);
+  border: 1px solid #d6c9b6;
+  background: #fffefb;
+  color: #1e1a14;
   padding: 0.75rem 0.85rem;
 }
 
