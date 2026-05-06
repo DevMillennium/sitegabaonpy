@@ -17,8 +17,9 @@ if (chatToggle && chatWidget && chatMessages && chatForm && chatInput) {
 
   function addAssistantWelcome() {
     const msg =
-      "Hola, soy Fernanda, responsable por la atención al consumidor de Gabaon Store. " +
-      "Estoy disponible 24 horas para ayudarte con precios, entrega, uso del producto y tu compra.";
+      "Hola, soy Fernanda de Gabaon Store. " +
+      "Te oriento sobre la marca, los productos y tu rutina. " +
+      "Cuando tengas definido qué querés y la zona de entrega, te acompaño al cierre por WhatsApp.";
     history.push({ role: "assistant", content: msg });
     addMessage("assistant", msg);
   }
@@ -83,7 +84,8 @@ if (chatToggle && chatWidget && chatMessages && chatForm && chatInput) {
       history.push({ role: "assistant", content: reply });
     } catch (error) {
       chatMessages.lastChild.textContent =
-        "Ahora mismo estoy con alta demanda. Si querés, escribime por WhatsApp y te atiendo enseguida.";
+        "Ahora mismo no puedo responder. Intentá de nuevo en unos segundos. " +
+        "Si ya definiste producto y ciudad, podés usar el botón verde de reserva de la página.";
     } finally {
       chatInput.disabled = false;
       chatInput.focus();

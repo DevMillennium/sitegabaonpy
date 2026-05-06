@@ -16,7 +16,7 @@ Landing em espanhol (Paraguai) para **Gabaon Idebenone Prestige Ampoule (kit 3x1
 - `js/main.js` — A/B test, links WhatsApp, vídeo institucional, analytics opcional
 - `js/config.js` — `whatsappNumber`, `siteUrl`, IDs GA4/Meta (opcionais)
 - `js/chat.js` — widget de chat 24h (Fernanda), orquestração no servidor, handoff WhatsApp, lead opcional
-- `api/chat.js` — DeepSeek com `response_format: json_object`, rate limit, FAQ/privacidade extraídos do site
+- `api/chat.js` — DeepSeek (`DEEPSEEK_API_KEY` solo en servidor), rate limit, CORS, FAQ/privacidad (`knowledge-bundle.js`) y reglas de cualificación antes de handoff a WhatsApp
 - `api/lead.js` — gravação opcional de leads no Supabase (`landing_leads`)
 - `api/store-facts.js` — preços e dados comerciais (fonte única para o prompt)
 - `api/knowledge-bundle.js` — texto gerado por `npm run extract:knowledge` a partir do `index.html`
@@ -30,15 +30,18 @@ Landing em espanhol (Paraguai) para **Gabaon Idebenone Prestige Ampoule (kit 3x1
 
 1. Em `js/config.js`: confirmar `whatsappNumber` (formato internacional sem `+`, ex. `595992799800`).
 2. Opcional: preencher `ga4MeasurementId` e `metaPixelId` para métricas.
-3. Configurar variável de ambiente na Vercel para o chat:
+3. Chave del asistente (nunca en el repo ni en `js/`): crear un archivo local copiando `.env.example` → `.env` **solo para pruebas**, y en producción usar Vercel → Project → Settings → Environment Variables:
+   - `DEEPSEEK_API_KEY` — obligatoria; la obtienes en la consola de DeepSeek.
+   - `DEEPSEEK_MODEL` — opcional (por defecto `deepseek-chat`).
+   - `CHAT_ALLOWED_ORIGINS` — opcional; URLs adicionales separadas por coma si probás en un dominio de preview (además de `https://gabaon.store` y localhost:8080).
+
+   Comportamiento: Fernanda responde sobre marca y productos; **solo después de cualificar** (producto elegido + ciudad/entrega + intención clara de compra/reserva) indica el WhatsApp oficial de cierre. Consultas directas del tipo “¿cuál es el teléfono?” se responden sin exigir ese flujo.
 
 ```bash
 vercel env add DEEPSEEK_API_KEY production
 ```
 
-Depois, informar a chave da API DeepSeek no prompt do comando.
-
-4. Opcional — leads do chat no Supabase (mesma tabela `landing_leads`; políticas RLS como no `schema.sql`):
+4. Opcional — leads do chat no Supabase (mesma tabela `landing_leads`; políticas RLS como en `schema.sql`):
 
 ```bash
 vercel env add SUPABASE_URL production
