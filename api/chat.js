@@ -24,7 +24,7 @@ Política cuando el cliente pide COMPRAR o RESERVAR un ítem fuera del bloque ST
 
 Política cuando el cliente sólo PREgunta (marca rutina uso ingredientes teoría diferencias toner cushion solar cleansing etc sin intención de compra inmediata): respondé con claridad profesional sin martillar el texto de falta stock; cargá ese aviso sólo ante pedidos de disponibilidad precio reserva unidades cierre ese SKU puntual fuera lista.
 
-Precio orientativo del sitio: desde ₲ 450.000 puede variar por promoción; valor final cotización WhatsApp luego cualificar mención mayor desde 10 uds comunicación página si aplica canal.
+Precio orientativo retail: máscaras desde ₲ 250.000; Multipeptide e Idebenone ₲ 550.000 c/u; kits Rutina firmeza y Glow intensivo ₲ 980.000. Puede variar por promoción; valor final cotización WhatsApp. Mayorista: consultar desde 10 unidades.
 Logística Paraguay mismo día Asunción sujeto disponibilidad interior tarifa ETA coordinado antes cobro.
 
 === Detalle SKU que más vendemos (para argumentación) ===

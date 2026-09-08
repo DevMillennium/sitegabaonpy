@@ -103,4 +103,39 @@ if (chatToggle && chatWidget && chatMessages && chatForm && chatInput) {
   }
 
   addAssistantWelcome();
+
+  const leadForm = document.getElementById("chat-lead-form");
+  const leadPanel = document.getElementById("chat-lead-panel");
+  if (leadForm) {
+    leadForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      document.dispatchEvent(new CustomEvent("gabaon:submit_contact"));
+      const payload = {
+        nombre: document.getElementById("chat-lead-nombre")?.value?.trim() || "",
+        telefono: document.getElementById("chat-lead-telefono")?.value?.trim() || "",
+        ciudad: document.getElementById("chat-lead-ciudad")?.value?.trim() || "",
+        email: document.getElementById("chat-lead-email")?.value?.trim() || ""
+      };
+      try {
+        const res = await fetch("/api/lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error("lead_failed");
+        document.dispatchEvent(new CustomEvent("gabaon:generate_lead"));
+        addMessage(
+          "assistant",
+          "Recibimos tus datos. El equipo de Gabaon Store te contactará pronto."
+        );
+        if (leadPanel) leadPanel.setAttribute("hidden", "");
+        leadForm.reset();
+      } catch {
+        addMessage(
+          "assistant",
+          "No pude guardar el formulario ahora. Escribí por WhatsApp al +595 992 799 800."
+        );
+      }
+    });
+  }
 }

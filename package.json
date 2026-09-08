@@ -6,7 +6,8 @@
     "node": "20.x"
   },
   "scripts": {
-    "build": "node -e \"require('fs').accessSync('index.html')\"",
+    "build": "node scripts/build-pages.mjs && node -e \"require('fs').accessSync('index.html')\"",
+    "pages": "node scripts/build-pages.mjs",
     "extract:knowledge": "node scripts/extract-knowledge.mjs",
     "vercel:unpause": "bash scripts/vercel-unpause.sh",
     "repo:sync": "bash scripts/repo-sync.sh"

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+<channel>
+  <title>Gabaon Store Paraguay</title>
+  <link>https://gabaon.store</link>
+  <description>Feed preparatorio. Checkout es por WhatsApp — validar elegibilidad Merchant Center antes de publicar free listings.</description>
+  <item>
+    <g:id>combo-premium-gabaon</g:id>
+    <g:title>Combo Premium Gabaon — Idebenone + Multipeptide</g:title>
+    <g:description>Combo promocional Idebenone Prestige Ampoule + Premium Multipeptide Cream. Precio promocional. Entrega en Asunción vía WhatsApp.</g:description>
+    <g:link>https://gabaon.store/productos/combo-premium-gabaon/</g:link>
+    <g:image_link>https://gabaon.store/assets/img/combo-premium-gabaon-699.jpg</g:image_link>
+    <g:availability>limited availability</g:availability>
+    <g:price>699000 PYG</g:price>
+    <g:brand>Gabaon</g:brand>
+    <g:condition>new</g:condition>
+    <g:identifier_exists>no</g:identifier_exists>
+  </item>
+  <item>
+    <g:id>multipeptide-cream-50ml</g:id>
+    <g:title>Premium Multipeptide Cream 50mL</g:title>
+    <g:description>Crema antiedad con multipeptídeos para una rutina diaria de cuidado premium. Textura liviana y absorción rápida.</g:description>
+    <g:link>https://gabaon.store/productos/gabaon-premium-multipeptide-cream/</g:link>
+    <g:image_link>https://gabaon.store/assets/img/multipeptide-cream-50ml-capa.png</g:image_link>
+    <g:availability>limited availability</g:availability>
+    <g:price>550000 PYG</g:price>
+    <g:brand>Gabaon</g:brand>
+    <g:condition>new</g:condition>
+    <g:identifier_exists>no</g:identifier_exists>
+  </item>
+  <item>
+    <g:id>idebenone-ampoule-3x10ml</g:id>
+    <g:title>Idebenone Prestige Ampoule 3x10mL</g:title>
+    <g:description>Ampollas con Idebenona y sistema de activación previa. Formato prestige para rutina diaria de alto desempeño cosmético.</g:description>
+    <g:link>https://gabaon.store/productos/gabaon-idebenone-prestige-ampoule/</g:link>
+    <g:image_link>https://gabaon.store/assets/img/idebenone-kit-3x10ml.png</g:image_link>
+    <g:availability>limited availability</g:availability>
+    <g:price>550000 PYG</g:price>
+    <g:brand>Gabaon</g:brand>
+    <g:condition>new</g:condition>
+    <g:identifier_exists>no</g:identifier_exists>
+  </item>
+  <item>
+    <g:id>collagen-essence-mask-3u</g:id>
+    <g:title>Collagen Essence Mask (3 unidades)</g:title>
+    <g:description>Pack de 3 máscaras faciales con enfoque en apariencia firme y tonificada. Complemento premium de rutina antiedad.</g:description>
+    <g:link>https://gabaon.store/productos/collagen-essence-mask/</g:link>
+    <g:image_link>https://gabaon.store/assets/img/collagen-mask-packshot.png</g:image_link>
+    <g:availability>limited availability</g:availability>
+    <g:price>250000 PYG</g:price>
+    <g:brand>Gabaon</g:brand>
+    <g:condition>new</g:condition>
+    <g:identifier_exists>no</g:identifier_exists>
+  </item>
+  <item>
+    <g:id>hyaluronic-acid-mask-3u</g:id>
+    <g:title>Hyaluronic Acid Mask (3 unidades)</g:title>
+    <g:description>Pack de 3 máscaras con ácido hialurónico para piel con sensación de resequedad o necesidad de luminosidad.</g:description>
+    <g:link>https://gabaon.store/productos/hyaluronic-acid-mask/</g:link>
+    <g:image_link>https://gabaon.store/assets/img/hyaluronic-mask-packshot.png</g:image_link>
+    <g:availability>limited availability</g:availability>
+    <g:price>250000 PYG</g:price>
+    <g:brand>Gabaon</g:brand>
+    <g:condition>new</g:condition>
+    <g:identifier_exists>no</g:identifier_exists>
+  </item>
+</channel>
+</rss>
